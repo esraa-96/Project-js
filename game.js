@@ -120,37 +120,69 @@ function createDiamond() {
 
 function searchCell(x, y) {
     for (var i = 0; i < grid.length; i++) {
-        console.log(x + "," + y);
+        // console.log(x + "," + y);
         if (grid[i].x == x && grid[i].y == y)
             return grid[i];
     }
     return null;
 }
 
+function editCell(x, y, newSrc) {
+    for (var i = 0; i < grid.length; i++) {
+        console.log(x + "," + y);
+
+        if (grid[i].x == x && grid[i].y == y) {
+            grid[i].val = newSrc;
+            console.log("edit");
+            console.log(grid[i].val)
+        }
+        //console.log(grid[i]);
+    }
+
+
+}
+
 document.onkeydown = function (e) {//???????????????????
+
     key = e.keyCode;
     switch (key) {
         case 37://left
+            // var s = new sound("attachDiamond.m4a");
+            // s.play();
             if (posx > 0) {
                 var image = new Image();
-                console.log(posy)
-                var nextCell = searchCell((posx - w) / w, posy / w);
-                console.log(nextCell)
-                if (nextCell) {
+                //console.log(posy)
+                var previousCell = searchCell((posx - w) / w, posy / w);
+                console.log("previousCell")
+                console.log(previousCell)
+                //console.log(previousCell)
+                if (previousCell) {
 
 
-                    if (nextCell.val != "rock.jpg") {
+                    if (previousCell.val != "rock.jpg") {
+                        if (previousCell.val == "diamonds.jpg") {
+                            var s = new sound("attachDiamond.m4a");
+                            s.play();
+                            Score++;
+                        }
+                        else {
+                            var s = new sound("move.m4a");
+                            s.play();
+
+                        }
                         ctx.fillRect(posx, posy, w, w);//???????????????????????????
+                        editCell(posx / w, posy / w, "block.jpg");
                         posx -= w;
                         image.src = 'emotion.jpg';
                         image.onload = function () {
                             ctx.drawImage(image, posx, posy, w, w);
                         }
+
                     }
 
-                    if (nextCell.val == "diamonds.jpg") {
-                        Score++;
-                    }
+
+
+
 
 
                 }
@@ -158,16 +190,35 @@ document.onkeydown = function (e) {//???????????????????
 
             break;
         case 38://up
+            console.log("upppp");
             if (posy > 0) {
                 var image = new Image();
                 /////////
-                var nextCell = searchCell(posx / w, (posy - w) / w);
-                console.log(nextCell)
-                if (nextCell) {
+                var upCell = searchCell(posx / w, (posy - w) / w);
+                console.log("upCell")
+                console.log(upCell)
+                if (upCell) {
 
 
-                    if (nextCell.val != "rock.jpg") {
+                    if (upCell.val != "rock.jpg") {
+
+                        //sound
+
+                        if (upCell.val == "diamonds.jpg") {
+                            var s = new sound("attachDiamond.m4a");
+                            s.play();
+                            Score++;
+                        }
+                        else {
+                            var s = new sound("move.m4a");
+                            s.play();
+
+                        }
+                        //sound
+
                         ctx.fillRect(posx, posy, w, w);//???????????????????????????
+                        editCell(posx / w, posy / w, "block.jpg");
+
                         posy -= w;
                         image.src = 'emotion.jpg';
                         image.onload = function () {
@@ -175,7 +226,7 @@ document.onkeydown = function (e) {//???????????????????
                         }
                     }
 
-                    if (nextCell.val == "diamonds.jpg") {
+                    if (upCell.val == "diamonds.jpg") {
                         Score++;
                     }
 
@@ -193,7 +244,24 @@ document.onkeydown = function (e) {//???????????????????
 
 
                     if (nextCell.val != "rock.jpg") {
-                        ctx.fillRect(posx, posy, w, w);//???????????????????????????
+
+
+                        //sound
+
+                        if (nextCell.val == "diamonds.jpg") {
+                            var s = new sound("attachDiamond.m4a");
+                            s.play();
+                            Score++;
+                        }
+                        else {
+                            var s = new sound("move.m4a");
+                            s.play();
+
+                        }
+                        //sound
+                        editCell(posx / w, posy / w, "block.jpg");
+                        ctx.fillRect(posx, posy, w, w);
+
                         posx += w;
                         image.src = 'emotion.jpg';
                         image.onload = function () {
@@ -213,12 +281,28 @@ document.onkeydown = function (e) {//???????????????????
             if (posy < cnv.height - w) {
                 var image = new Image();//?????????????????????????
                 ///////////
-                var nextCell = searchCell(posx / w, (posy + w) / w);
-                console.log(nextCell)
-                if (nextCell) {
+                var downCell = searchCell(posx / w, (posy + w) / w);
+                // console.log(nextCell)
+                if (downCell) {
 
 
-                    if (nextCell.val != "rock.jpg") {
+                    if (downCell.val != "rock.jpg") {
+
+                        //sound
+
+                        if (downCell.val == "diamonds.jpg") {
+                            var s = new sound("attachDiamond.m4a");
+                            s.play();
+                            Score++;
+                        }
+                        else {
+                            var s = new sound("move.m4a");
+                            s.play();
+
+                        }
+                        //sound
+                        editCell(posx / w, posy / w, "block.jpg");
+
                         ctx.fillRect(posx, posy, w, w);//???????????????????????????
                         posy += w;
                         image.src = 'emotion.jpg';
@@ -227,7 +311,7 @@ document.onkeydown = function (e) {//???????????????????
                         }
                     }
 
-                    if (nextCell.val == "diamonds.jpg") {
+                    if (downCell.val == "diamonds.jpg") {
                         Score++;
                     }
 
@@ -243,6 +327,22 @@ document.onkeydown = function (e) {//???????????????????
     // ctx.drawImage(img, x, y);
 
 
+}
+//sound constructor
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    console.log(this.sound);
+    document.body.appendChild(this.sound);
+    this.play = function () {
+        this.sound.play();
+    }
+    this.stop = function () {
+        this.sound.pause();
+    }
 }
 // Cell.prototype={
 
