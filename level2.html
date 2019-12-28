@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <title>Canvas</title>
+  <link href="/favicon.ico" type="image/x-icon" rel="icon" />
+  <style>
+    #myc {
+      border: 1px solid black;
+      margin: auto;
+      display: block;
+      background-color: rgba(0, 0, 0);
+    }
+
+    * {
+      padding: 0px;
+      margin: 0px;
+      background-color: rgb(0, 0, 0);
+    }
+
+    #scoresection {
+      /* position: fixed;
+            top: 90%; */
+      height: 70px;
+      width: 100%;
+      background-image: url('stone.jpg');
+      text-align: center;
+      position: sticky;
+      top: 0;
+
+    }
+
+    #score {
+
+      background-color: transparent;
+      color: white;
+      font-family: 'Bernard MT Condensed';
+      font-size: 40px;
+
+    }
+
+    #Vscore,
+    #VLives,
+    #timer {
+
+      font-size: 20px;
+      width: 200px;
+      padding: 15px 100px;
+      background-color: black;
+      color: white;
+      border-radius: 30px;
+
+
+
+    }
+
+    #messp,
+    #GAME,
+    #WIN {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+
+
+    }
+
+
+    /* #WIN {
+            display: block;
+        } */
+
+    .mss {
+      width: 700px;
+      height: 500px;
+      margin: 5% auto;
+      font-size: 40px;
+      color: white;
+      font-family: 'Bernard MT Condensed';
+      padding: 20px;
+      background-color: black;
+      opacity: 0.7;
+      text-align: center;
+
+    }
+
+    p {
+      margin-top: 100px;
+      background-color: transparent;
+    }
+
+    #GAME p {
+      color: red;
+      font-family: 'Snap ITC';
+      font-size: 60px;
+    }
+
+    #WIN .mss {
+      background-image: url('win.png');
+      background-size: 100% 100%;
+      text-align: initial;
+
+
+    }
+
+
+    #WIN [type="button"] {
+      background-color: transparent;
+      margin-top: 61%;
+      border: none;
+
+    }
+
+    #WIN [value="Menu"] {
+      margin-left: 10%;
+    }
+
+    #WIN [value="Next Level"] {
+      margin-left: 40%;
+    }
+
+    [type="button"] {
+      padding: 30px;
+      outline: none;
+      border: none;
+      color: white;
+      border-radius: 30px;
+      margin-top: 40px;
+      cursor: pointer;
+      font-family: 'Snap ITC';
+      font-size: 20px;
+      border: 5px dotted bisque;
+    }
+
+    #GAME [type="button"] {
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="scoresection">
+    <span id="score">Score:</span>
+    <span id="Vscore">0</span>
+    <span id="score">Lives:</span>
+    <span id="VLives">4</span>
+    <span id="score">Timer:</span>
+    <span id="timer">4</span>
+
+  </div>
+  <canvas id="myc">
+
+  </canvas>
+
+  <div id="messp">
+    <div class="mss">
+      <p>YOU CAN CONTINE BUT YOU WILL LOSE LIVE OR RESTART GAME </p>
+      <input type="button" value="CONTINE" />
+      <input type="button" value="RESTART" />
+    </div>
+  </div>
+  <div id="GAME">
+    <div class="mss">
+      <p>GAME OVER </p>
+      <input type="button" value="Logout" />
+      <input type="button" value="try again" />
+    </div>
+  </div>
+  <div id="WIN">
+
+    <div class="mss">
+      <div id="winImg"></div>
+      <input type="button" value="Menu" />
+    </div>
+  </div>
+
+  <script src="level2.js"></script>
+  <!-- <script src="test.js"></script> -->
+</body>
+
+</html>

@@ -11,17 +11,19 @@ var gameOver = document.querySelector('#GAME');
 var winPage = document.querySelector('#WIN');
 var btn_tryAgain = document.querySelector('[value = "try again"]');
 var mss = document.querySelector('#WIN .mss');
+var timer_v = document.querySelector('#timer');
 var cols, rows;
 var w = 50;
+var timer = 2;
 var grid = [];
 var posx = w;
 var posy = w;
 var Score = 0;
-var lives = 3;
+var lives = 2;
 var notRock = [[2, 1], [3, 1], [cols - 3, rows - 2]];
 var notRemove = ['rock.jpg', 'closeDoor.png']
-var numOfDiamond = 43;
-var numOfRock = 43;
+var numOfDiamond = 53;
+var numOfRock = 70;
 var winScore = 2;
 var flagOpen = true;
 var flagKeyboard = true;
@@ -29,6 +31,7 @@ var flagKeyboard = true;
 /*-------------------------------------AllCalling-------------------------*/
 score_v.innerText = Score;
 live_v.innerText = lives;
+timer_v.innerText = timer;
 function continueF() {
     window.scrollTo(0, 0);
     flagOpen = true
@@ -42,9 +45,32 @@ function continueF() {
     createDoor();
     draw();
     openDoor();
+    var timerInter = setInterval(function () {
+        if (flagKeyboard) {
+
+
+            if (timer == 1) {
+                clearInterval(timerInter);
+                console.log(winPage.style.display)
+                if (winPage.style.display != "block") {
+                    fail("sadtrombone.mp3");
+
+                }
+            }
+
+            timer--;
+            timer_v.innerText = timer;
+            console.log(timer);
+        }
+        else {
+            console.log("lllllllllllllllllllll");
+            clearInterval(timerInter);
+        }
+    }, 16000);
 
 }
 continueF();
+
 /*-------------------------------------AllFunction-------------------------*/
 
 //create 
@@ -74,7 +100,7 @@ function draw() {
 }
 
 //constructure cell
-function Cell(x, y, val = "grass.jpg")//1,0
+function Cell(x, y, val = "grass2.png")//1,0
 {
     this.x = x;
     this.y = y;
@@ -142,7 +168,7 @@ function createRock() {
         var ranRow = Math.floor(Math.random() * rows);
         var ranCol = Math.floor(Math.random() * cols);
         for (var i = 0; i < grid.length; i++) {
-            if (grid[i].val == "grass.jpg" &&
+            if (grid[i].val == "grass2.png" &&
                 grid[i].x == ranCol &&
                 grid[i].y == ranRow) {
                 if (notRockFun(grid[i].x, grid[i].y)) {
@@ -165,7 +191,7 @@ function createDiamond() {
         var ranCol = Math.floor(Math.random() * cols);
         // // console.log(ranRow, "    ", ranCol);
         for (var i = 0; i < grid.length; i++) {
-            if (grid[i].val == "grass.jpg" && grid[i].x == ranCol && grid[i].y == ranRow) {
+            if (grid[i].val == "grass2.png" && grid[i].x == ranCol && grid[i].y == ranRow) {
                 var C = new Cell(ranCol, ranRow, "diamonds.jpg");
                 grid[i] = C;
                 rocksCount++;
@@ -334,14 +360,15 @@ function rockAnimation(rockCell)//rock
                                 disableScrolling(this.scrollX, this.scrollY)
                                 contin.style.display = 'block'
                                 playSound('explosion.mp3');
-                                flagKeyboard = false;
+                                flagKeyboard = false;//=======================
 
                             }
 
 
                         }
                         else {
-                            fail('explosion.mp3');
+
+                            fail('explosion.mp3');//==========================
                         }
 
                     }
@@ -463,7 +490,7 @@ function win(x, y) {
             }, 100)
 
             playSound("applause.mp3");
-            flagKeyboard = false;
+            flagKeyboard = false;//=====================
             return true;
         }
     }
@@ -475,18 +502,25 @@ function win(x, y) {
 btn_tryAgain.addEventListener('click', function () {
     location.reload();
 })
-
 function fail(x) {//========================
     window.scrollTo(0, 0);
     disableScrolling(0, 0)
     gameOver.style.display = "block";
     playSound(x);
     flagKeyboard = false;
+
+
+
 }
+
+
+
+
 
 document.onkeydown = function (e) {
     key = e.keyCode;
     if (flagKeyboard) {//====================
+
         switch (key) {
             case 37://left
                 if (posx > w) {
@@ -509,7 +543,7 @@ document.onkeydown = function (e) {
                                 s.play();
                                 Score++;
                             }
-                            else if (previousCell.val == "grass.jpg") {
+                            else if (previousCell.val == "grass2.png") {
                                 var s = new sound("move.m4a");
                                 s.play();
 
@@ -554,7 +588,7 @@ document.onkeydown = function (e) {
                                 playSound("attachDiamond.m4a");
                                 Score++;
                             }
-                            else if (nextCell.val == "grass.jpg") {
+                            else if (nextCell.val == "grass2.png") {
                                 playSound("move.m4a");
                             }
                             //sound
@@ -587,7 +621,7 @@ document.onkeydown = function (e) {
                                 playSound("attachDiamond.m4a");
                                 Score++;
                             }
-                            else if (upCell.val == "grass.jpg") {
+                            else if (upCell.val == "grass2.png") {
                                 playSound("move.m4a");
                             }
 
@@ -618,7 +652,7 @@ document.onkeydown = function (e) {
                                 playSound("attachDiamond.m4a");
                                 Score++;
                             }
-                            else if (downCell.val == "grass.jpg") {
+                            else if (downCell.val == "grass2.png") {
                                 playSound("move.m4a");
                             }
                             //sound
@@ -646,6 +680,7 @@ document.onkeydown = function (e) {
 
 
 
+
 }
 //sound constructor
 function sound(src) {
@@ -663,5 +698,7 @@ function sound(src) {
         this.sound.pause();
     }
 }
+
+
 
 

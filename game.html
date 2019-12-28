@@ -55,7 +55,8 @@
         }
 
         #messp,
-        #GAME {
+        #GAME,
+        #WIN {
             position: absolute;
             top: 0px;
             left: 0px;
@@ -64,9 +65,11 @@
             background-color: rgba(0, 0, 0, 0.6);
             display: none;
 
+
         }
 
-        /* #GAME {
+
+        /* #WIN {
             display: block;
         } */
 
@@ -93,6 +96,30 @@
             color: red;
             font-family: 'Snap ITC';
             font-size: 60px;
+        }
+
+        #WIN .mss {
+            background-image: url('win.png');
+            background-size: 100% 100%;
+            text-align: initial;
+
+
+        }
+
+
+        #WIN [type="button"] {
+            background-color: transparent;
+            margin-top: 61%;
+            border: none;
+
+        }
+
+        #WIN [value="Menu"] {
+            margin-left: 10%;
+        }
+
+        #WIN [value="Next Level"] {
+            margin-left: 40%;
         }
 
         [type="button"] {
@@ -138,6 +165,14 @@
             <p>GAME OVER </p>
             <input type="button" value="Logout" />
             <input type="button" value="try again" />
+        </div>
+    </div>
+    <div id="WIN">
+
+        <div class="mss">
+            <div id="winImg"></div>
+            <input type="button" value="Menu" />
+            <input type="button" value="Next Level" />
         </div>
     </div>
 
