@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <link rel="shortcut icon" type="image/x-icon" href="emotion.jpg" />
+    <style>
+        body {
+            background-image: url("menu2.png");
+            background-repeat: no-repeat;
+            background-size: 1550px 900px;
+        }
+
+        #login_section {
+            /* background-color: rgb(99, 11, 11); */
+            width: 50%;
+            height: 300px;
+            margin: 300px;
+            position: relative;
+            top: -300px;
+
+        }
+
+        #login_section>* {
+
+            display: block;
+            margin: 70px;
+            margin-left: 400px;
+            height: 50px;
+        }
+
+        p {
+            position: relative;
+            top: 50px;
+            left: 150px;
+            font-size: 40px;
+            color: gold;
+        }
+
+        #password_box {
+            position: relative;
+            top: -50px;
+        }
+
+        input {
+
+            text-align: center;
+            border-radius: 20%;
+            box-shadow: none;
+            text-shadow: none;
+            width: 50%;
+            outline: none;
+
+        }
+
+        button {
+
+            position: relative;
+            left: 150px;
+            top: -100px;
+            width: 80px;
+            background-color: gold;
+            border: none;
+        }
+
+        button:hover {
+
+            transform: scale(1.1);
+        }
+
+        .welcome {
+            width: 500px;
+            height: 200px;
+            margin: 5% auto;
+            font-size: 40px;
+            color: white;
+            font-family: 'Bernard MT Condensed';
+            padding: 20px;
+            background-color: black;
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        #welcome_text {
+
+            position: relative;
+            left: 10px;
+
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="Welcome">
+        <div class="welcome">
+            <p id="welcome_text">Welcome</p>
+        </div>
+    </div>
+    <div id="login_section">
+        <p id="login_word">Login</p>
+        <input id="name_box" type="text" placeholder="Enter Your Name">
+        <input id="password_box" type="password" placeholder="Enter Your password">
+        <button id="sign_in_button">Sign In</button>
+    </div>
+
+    <script>
+        var loginSection = document.getElementById("login_section");
+        var userName = document.getElementById("name_box");
+        var password = document.getElementById("password_box");
+        var signinButton = document.getElementById("sign_in_button");
+        var welcome = document.getElementById("Welcome");
+        var welcomeText = document.getElementById("welcome_text");
+
+
+        window.addEventListener('load', function () {
+            welcome.style.display = "none";
+
+        })
+
+        function store() {
+            localStorage.setItem('name', userName.value);
+            localStorage.setItem('password', password.value);
+        }
+
+        signinButton.addEventListener('click', function () {
+
+
+            // get data from the register-form
+            var storedName = localStorage.getItem('name');
+            var storedPassword = localStorage.getItem('password');
+
+            // check if stored data from register-form is equal to data from input boxes
+            if (userName.value != "" && password.value != "") {
+                if (userName.value == storedName && password.value == storedPassword) {
+                    welcomeText.innerHTML = "Welcome Back " + storedName + " !";
+                    loginSection.style.display = "none"
+                    welcome.style.display = "block";
+                    setTimeout(function () {
+
+                        window.location = ("game.html")
+
+                    }, 1000)
+                } else {
+                    store();
+                    localStorage.setItem('level', 1);
+                    welcomeText.innerHTML = "Hello New Player"
+                    loginSection.style.display = "none"
+                    welcome.style.display = "block";
+                    setTimeout(function () {
+
+                        window.location = ("game.html")
+
+                    }, 1000)
+                }
+            } else {
+
+                alert("Please Enter Username and a Password");
+
+            }
+
+        })
+
+    </script>
+
+
+</body>
+
+</html>

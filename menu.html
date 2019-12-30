@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Menu</title>
+    <link rel="shortcut icon" type="image/x-icon" href="emotion.jpg" />
+
+    <style>
+        body {
+
+            background-image: url("menu2.png");
+            background-repeat: no-repeat;
+            background-size: 1550px 750px;
+        }
+
+        #menu_image {
+            margin: 0;
+            height: 750px;
+        }
+
+        #menu_section>* {
+            margin: 50px;
+            font-size: 30px;
+
+        }
+
+        #menu_image {
+            width: 600px;
+            height: 290px;
+            float: right;
+            position: relative;
+            left: 450px;
+            top: -5px;
+        }
+
+        #menu_section {
+            color: gold;
+            float: right;
+            position: relative;
+            right: 550px;
+            top: -30px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="menu_section">
+        <p id="start">START</p>
+        <p id="load_level">LOAD LEVEL</p>
+        <p id="instructions">Instructions</p>
+        <p id="quit">Quit</p>
+
+    </div>
+    <!-- <img id="menu_image" src="Untitled.png"> -->
+
+
+    <script>
+
+        var startButton = document.getElementById("start")
+        var loadLevelButton = document.getElementById("load_level")
+        var loadPreviousButton = document.getElementById("load_previous_game")
+        var quitButton = document.getElementById("quit")
+        var container = document.querySelector("#menu_section");
+        var menu_section = container.querySelectorAll("#menu_section > p");
+        var count = 0;
+        var level = 5;
+        window.addEventListener('load', function () {
+            menu_section[count].style.transform = "scale(2)";
+            menu_section[count].style.boxShadow = "1px 1px 8px 1px gold";
+            // count++;
+        })
+
+        document.onkeydown = function (e) {
+            var key = e.keyCode;
+
+            switch (key) {
+
+                case 40:
+
+                    if (count != 3) {
+                        menu_section[count].style.transform = "";
+                        menu_section[count].style.boxShadow = "";
+                        menu_section[count + 1].style.transform = "scale(2)";
+                        menu_section[count + 1].style.boxShadow = "1px 1px 8px 1px gold";
+                        count++;
+                    }
+                    else {
+
+                        menu_section[count].style.transform = "";
+                        menu_section[count].style.boxShadow = "";
+                        count = 0;
+                        menu_section[count].style.transform = "scale(2)";
+                        menu_section[count].style.boxShadow = "1px 1px 8px 1px gold";
+
+                    }
+                    break;
+
+                case 38:
+                    if (count != 0) {
+                        menu_section[count].style.transform = "";
+                        menu_section[count].style.boxShadow = "";
+                        menu_section[count - 1].style.transform = "scale(2)";
+                        menu_section[count - 1].style.boxShadow = "1px 1px 8px 1px gold";
+                        count--;
+                    } else {
+
+                        menu_section[count].style.transform = "";
+                        menu_section[count].style.boxShadow = "";
+                        count = 3;
+                        menu_section[count].style.transform = "scale(2)";
+                        menu_section[count].style.boxShadow = "1px 1px 8px 1px gold";
+
+                    }
+                    break;
+
+                case 13:
+                    if (count == 0) {
+                        window.location = ("login.html")
+                    } else if (count == 1) {
+                        window.location = ("loadGame.html")
+                    } else if (count == 2) {
+
+                        window.location = ("instructions.html")
+                    }
+                    else if (count == 3) {
+                        var myWindow = window.open("menu.html", "_self");
+                        // setTimeout(function () { myWindow.close(); }, 10);
+                        // myWindow.close();
+                        window.open("menu.html", "_self").close();
+
+                    }
+
+            }
+
+
+
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

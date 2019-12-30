@@ -11,14 +11,15 @@ var gameOver = document.querySelector('#GAME');
 var winPage = document.querySelector('#WIN');
 var btn_tryAgain = document.querySelector('[value = "try again"]');
 var menuButton = document.querySelector('[value = "Menu"]');
-var nextlevelButton = document.querySelector('[value = "Next Level"]');
+var chooseAnotherLevelButton = document.querySelector('[value = "Choose Another Level"]');
 var mss = document.querySelector('#WIN .mss');
-var sp_timer = document.querySelector("#s_timer");
 var storedLevel = localStorage.getItem('level');
 var timer_v = document.querySelector('#timer');
 var level_v = document.querySelector("#level");
+var sp_timer = document.querySelector("#s_timer");
 var logout = document.querySelector("[value='Logout']");
 var cols, rows;
+var timer = 2;
 var w = 50;
 var grid = [];
 var posx = w;
@@ -26,68 +27,81 @@ var posy = w;
 var Score = 0;
 var lives = 3;
 var notRock = [[2, 1], [3, 1], [cols - 3, rows - 2]];
-var notRemove = ['rock.jpg', 'closeDoor.png']
+var notRemove = ['rock.jpg', 'closeDoor.png'];
+var aroundDoor = [[cols - 3, rows - 2], [cols - 2, rows - 3]];
 var numOfDiamond = 0;
 var numOfRock = 0;
 var winScore = 2;
 var flagOpen = true;
 var flagKeyboard = true;
-var timer = 2;
-var grass = "grass.jpg"
-var aroundDoor = [[cols - 3, rows - 2], [cols - 2, rows - 3]]
+var Level;
+var grass = "grass.jpg";
 var effectKey = 1;
 /**
  * 1-->game over
  * 2-->continue
  * 3-->win
  */
-var prevKey = 0;
-var jim = true;
+
 /*-------------------------------------AllCalling-------------------------*/
-if (storedLevel == 1) {
-    lives = 4;
+score_v.innerText = Score;
+live_v.innerText = lives;
 
-}
+// set number of rocks and diamonds
+window.addEventListener('load', function () {
 
-else if (storedLevel == 2) {
-    timer = 60;//5
-    lives = 3;//3
+    Level = window.prompt("Please Enter Level  1 or 2 or 3");
+    while (Level == "" || Level > 3 || Level < 1) {
+        Level = window.prompt("Please Enter Level  1 or 2 or 3, it is must");
+    }
 
-}
-else {
-    timer = 40;
-    lives = 2;
-}
+    if (Level == 1) {
+        lives = 4;
+    }
+
+    else if (Level == 2) {
+        timer = 60;//5
+        lives = 3;//3
+    }
+    else {
+        timer = 40;
+        lives = 2;
+    }
+
+
+    continueF();
+})
+
 
 function continueF() {
-    level_v.innerText = storedLevel;
+    level_v.innerText = Level;
     score_v.innerText = Score;
     live_v.innerText = lives;
     timer_v.innerText = timer;
 
-    if (storedLevel == 1) {
+    if (Level == 1) {
         numOfRock = 40;
         numOfDiamond = 30;
         winScore = 20;
 
 
     }
-    else if (storedLevel == 2) {
+    else if (Level == 2) {
         numOfRock = 70;
         numOfDiamond = 50;
         winScore = 30;
         grass = "grass2.png"
 
     }
-    else if (storedLevel == 3) {
+    else if (Level == 3) {
         numOfRock = 100;
         numOfDiamond = 60;
         winScore = 40;
         grass = "grass3.png"
-        nextlevelButton.style.display = "none";
+        chooseAnotherLevelButton.style.display = "none";
 
     }
-    if (storedLevel > 1) {
+    if (Level > 1) {
         sp_timer.style.display = "inline";
         var timerInter = setInterval(function () {
             if (flagKeyboard) {
@@ -128,7 +142,6 @@ function continueF() {
     openDoor();
 
 }
-continueF();
 /*-------------------------------------AllFunction-------------------------*/
 
 //create 
@@ -138,7 +151,6 @@ function setup() {
     cols = Math.floor(cnv.width / w);
     rows = Math.floor(cnv.height / w);
     aroundDoor = [[cols - 3, rows - 2], [cols - 2, rows - 3]];
-    notRock = [[2, 1], [3, 1], [cols - 3, rows - 2]];
     for (var row = 0; row < rows; row++) {
         for (var col = 0; col < cols; col++) {
 
@@ -400,8 +412,8 @@ function rockAnimation(rockCell)//rock
                                 ctx.drawImage(image2, rockCell.x * w, dy + w, w, w);
                                 window.scrollTo(0, 0);
                                 disableScrolling(this.scrollX, this.scrollY)
-                                contin.style.display = 'block'
                                 effectKey = 2;
+                                contin.style.display = 'block'
                                 playSound('explosion.mp3');
                                 flagKeyboard = false;
 
@@ -410,7 +422,7 @@ function rockAnimation(rockCell)//rock
 
                         }
                         else {
-                            fail('explosion.mp3');
+                            fail("sadtrombone.mp3");
                         }
 
                     }
@@ -498,25 +510,13 @@ function closeDoor() {
     }
 }
 
-function drawJim(newCell, newPosx, newPosy, x, y) {
+function drawJim(newCell, newPosx, newPosy) {
     ctx.fillRect(posx, posy, w, w);
     editCell(posx / w, posy / w, "black.jpg");
     posx = newPosx;
     posy = newPosy;
     newCell.val = 'emotion.jpg';
-    // newCell.show();
-    var image = new Image();
-    image.src = 'emotion.jpg';
-    image.onload = function () {
-        ctx.drawImage(image, newPosx, newPosy, w, w);
-        ctx.fillRect(x, y, w, w);
-        editCell(x / w, y / w, "black.jpg");
-        ////jim=true
-
-    }
-
-
-
+    newCell.show();
 }
 
 function win(x, y) {
@@ -526,10 +526,6 @@ function win(x, y) {
             disableScrolling(this.scrollX, this.scrollY)
             var c = 0;
             winPage.style.display = 'block'
-            if (storedLevel < 3) {
-                storedLevel++;
-                localStorage.setItem('level', storedLevel);
-            }
             var value = ['block', 'none', 'block', 'none']
             var handler = setInterval(function () {
                 if (c >= 4) {
@@ -545,8 +541,14 @@ function win(x, y) {
 
             playSound("applause.mp3");
             flagKeyboard = false;
+            // menuButton.addEventListener('click', function () {
+            //     window.open("menu.html");
+            // }
+            // )
+            // chooseAnotherLevelButton.addEventListener('click', function () {
+            //     location.reload();
+            // })
             effectKey = 3;
-
             return true;
         }
     }
@@ -559,23 +561,14 @@ function win(x, y) {
 //     location.reload();
 // })
 
-function fail(x) {
-    flagKeyboard = false;
+function fail(x) {//========================
     effectKey = 1;
-    setTimeout(() => {
-        window.scrollTo(0, 0);
-        disableScrolling(0, 0)
-        gameOver.style.display = "block";
-        playSound(x);
-    }, 1000);
-
-
+    window.scrollTo(0, 0);
+    disableScrolling(0, 0)
+    gameOver.style.display = "block";
+    playSound(x);
+    flagKeyboard = false;
 }
-// logout.addEventListener('click', function () {
-//     window.open("menu.html");
-
-// });
-
 function checkRockAroundDoor() {
 
     var cell = searchCell(aroundDoor[0][0], aroundDoor[0][1]);
@@ -592,7 +585,6 @@ function checkRockAroundDoor() {
 document.onkeydown = function (e) {
     key = e.keyCode;
     if (flagKeyboard) {//====================
-        //jim = false;
         switch (key) {
             case 37://left
                 if (posx > w) {
@@ -625,7 +617,7 @@ document.onkeydown = function (e) {
                                 changeRockDown(beforePreviousCell);
                             }
 
-                            drawJim(previousCell, posx - w, posy, posx, posy);
+                            drawJim(previousCell, posx - w, posy);
                             changeRock(upCell, position);
 
 
@@ -661,13 +653,12 @@ document.onkeydown = function (e) {
                             else if (nextCell.val == grass) {
                                 playSound("move.m4a");
                             }
-                            //sound
                             if (notRemove.includes(nextCell.val)
                                 && afterNext.val == "black.jpg") {
                                 changeRockDown(afterNext);
                             }
 
-                            drawJim(nextCell, posx + w, posy, posx, posy);
+                            drawJim(nextCell, posx + w, posy);
                             changeRock(upCell, position);
                         }
 
@@ -696,7 +687,7 @@ document.onkeydown = function (e) {
                             }
 
                             //sound
-                            drawJim(upCell, posx, posy - w, posx, posy);
+                            drawJim(upCell, posx, posy - w);
                         }
 
                         if (upCell.val == "diamonds.jpg") {
@@ -727,7 +718,7 @@ document.onkeydown = function (e) {
                             }
                             //sound
 
-                            drawJim(downCell, posx, posy + w, posx, posy);
+                            drawJim(downCell, posx, posy + w);
                             if (cellUp && cellUp.val == 'rock.jpg') {
                                 rockAnimation(cellUp);
                             }
@@ -764,8 +755,8 @@ document.onkeydown = function (e) {
                 }
 
                 else if (effectKey == 3) {
-                    if (nextlevelButton.style.display != "none") {
-                        nextlevelButton.style.boxShadow = "1px 1px 8px 1px gold";
+                    if (chooseAnotherLevelButton.style.display != "none") {
+                        chooseAnotherLevelButton.style.boxShadow = "1px 1px 8px 1px gold";
                         menuButton.style.boxShadow = "";
                     }
                     else {
@@ -786,8 +777,8 @@ document.onkeydown = function (e) {
 
                 }
                 else if (effectKey == 3) {
-                    if (nextlevelButton.style.display != "none") {
-                        nextlevelButton.style.boxShadow = "";
+                    if (chooseAnotherLevelButton.style.display != "none") {
+                        chooseAnotherLevelButton.style.boxShadow = "";
                         menuButton.style.boxShadow = "1px 1px 8px 1px gold";
                     }
                     else {
@@ -820,7 +811,7 @@ document.onkeydown = function (e) {
                     }
                 }
                 else if (effectKey == 3) {
-                    if (nextlevelButton.style.display == "none") {
+                    if (chooseAnotherLevelButton.style.display == "none") {
                         document.location.href = "menu.html";
                     }
                     else {
@@ -841,6 +832,7 @@ document.onkeydown = function (e) {
         prevKey = key;
 
     }
+
 
 
 
