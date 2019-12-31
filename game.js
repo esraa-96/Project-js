@@ -509,8 +509,8 @@ function drawJim(newCell, newPosx, newPosy, x, y) {
     image.src = 'emotion.jpg';
     image.onload = function () {
         ctx.drawImage(image, newPosx, newPosy, w, w);
-        ctx.fillRect(x, y, w, w);
-        editCell(x / w, y / w, "black.jpg");
+        // ctx.fillRect(x, y, w, w);
+        // editCell(x / w, y / w, "black.jpg");
         ////jim=true
 
     }
@@ -520,7 +520,7 @@ function drawJim(newCell, newPosx, newPosy, x, y) {
 }
 
 function win(x, y) {
-    if (!flagOpen) {
+    if (!flagOpen && gameOver.style.display != "block") {
         if (x == cols - 2 && y == rows - 2) {
             window.scrollTo(0, 0);
             disableScrolling(this.scrollX, this.scrollY)
